@@ -1,29 +1,19 @@
 ﻿using System;
 namespace DSolver
 {
-    public class Vector
+    public class Vector : Matrix
     {
 		public int Size { get; private set; }
 
-		private double[] Values { get; set; }
+		public Vector(double[] values) : base(values)
+        {
+            this.Size = this.VSize;
+        }
 
-		public Vector(double[] values)
-		{
-			this.Values = values;
-			this.Size = values.GetLength(0);
-		}
-
-		public void Display()
-		{
-			int i;
-			string name = "Vec";
-			Console.Write("{0} = [", name);
-			for (i = 0; i < this.Size - 1; i++)
-			{
-				Console.Write("{0,8:f4} ", this.Values[i]);
-			}
-			Console.Write("{0,8:f4}  ]\n\n", this.Values[this.Size - 1]);
-		}
+        public Vector(int size) : base(size)
+        {
+            this.Size = size;
+        }
 
 		public void SetValue(int index, double value)
 		{
@@ -31,7 +21,16 @@ namespace DSolver
 			{
 				return;
 			}
-			this.Values[index] = value;
+			this.SetValue(index, 0, value);
 		}
+
+        public double GetValue(int index)
+        {
+            if (index < 0 || index >= this.Size)
+            {
+                return 0;
+            }
+            return this.GetValue(index, 0);
+        }
     }
 }
