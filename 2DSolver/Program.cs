@@ -83,8 +83,12 @@ namespace DSolver
 
 			Console.WriteLine("\nNODES ET ELEMENTS\n====================\n");
 
-			Node node1 = new Node().WithId(1).WithPosX(0).WithPosY(0).WithForce(new Vector(new double[2]{3, 3}));
-			Node node2 = new Node().WithId(2).WithPosX(2).WithPosY(2).WithForce(new Vector(new double[2]{0, 0}));
+			Node node0 = new Node().WithId(0).WithPosX(0).WithPosY(0)
+							.WithBoundaryCondition(new BoundaryCondition().WithX(0).WithY(0));
+			Node node1 = new Node().WithId(0).WithPosX(0).WithPosY(0)
+							.WithBoundaryCondition(new BoundaryCondition().WithX(0).WithY(0));
+			Node node2 = new Node().WithId(1).WithPosX(2).WithPosY(2)
+							.WithForce(new Vector(new double[2]{0, 0}));
 
 			Element element = new Element().WithType(Element.ELASTIC_BEAM)
 								.WithFirstNode(node1)
@@ -93,6 +97,8 @@ namespace DSolver
 								.WithSection(100);
 			
 			element.ElementaryMatrix.Display("Elementary matrix");
+
+            new DiscreteSystem().WithNodesCount(3).AddElement(element);
 
             Console.ReadKey();
 		}
