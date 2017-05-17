@@ -5,6 +5,11 @@ namespace DSolver
     {
 		public int Size { get; private set; }
 
+		public Vector() : base()
+		{
+			this.Size = this.VSize;
+		}
+
 		public Vector(double[] values) : base(values)
         {
             this.Size = this.VSize;
@@ -14,6 +19,19 @@ namespace DSolver
         {
             this.Size = size;
         }
+
+		public Vector WithValues(double[] values)
+		{
+			base.WithValues(values);
+			return this;
+		}
+
+		public Vector WithZeroes(int size)
+		{
+			base.WithZeroes(size, 1);
+			this.Size = this.VSize;
+			return this;
+		}
 
 		public void SetValue(int index, double value)
 		{

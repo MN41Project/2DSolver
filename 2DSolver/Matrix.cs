@@ -14,6 +14,10 @@ namespace DSolver
 
         protected double[,] Values { get; set; }
 
+		public Matrix()
+		{
+		}
+
         public Matrix(double[,] values)
         {
             this.Values = values;
@@ -59,6 +63,42 @@ namespace DSolver
             this.HSize = 1;
             this.VSize = lines;
         }
+
+		public virtual Matrix WithValues(double[,] values)
+		{
+			this.Values = values;
+			this.VSize = values.GetLength(0);
+			this.HSize = values.GetLength(1);
+			return this;
+		}
+
+		protected virtual Matrix WithValues(double[] values)
+		{
+			this.VSize = values.GetLength(0);
+			this.HSize = 1;
+			this.Values = new double[this.VSize, this.HSize];
+			int i;
+			for (i = 0; i < this.VSize; i++)
+			{
+				this.SetValue(i, 0, values[i]);
+			}
+			return this;
+		}
+
+		public virtual Matrix WithZeroes(int lines, int columns)
+		{
+			this.Values = new double[lines, columns];
+			for (int i=0; i<lines; i++)
+			{
+				for (int j=0; j<columns; j++)
+				{
+					this.SetValue(i, j, 0);
+				}
+			}
+			this.VSize = lines;
+			this.HSize = columns;
+			return this;
+		}
 
         public void SetValue(int line, int column, double newValue)
         {

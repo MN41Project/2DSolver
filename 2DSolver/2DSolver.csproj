@@ -39,6 +39,9 @@
     <Compile Include="LinearSystem.cs" />
     <Compile Include="Vector.cs" />
     <Compile Include="SquareMatrix.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="Element.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
