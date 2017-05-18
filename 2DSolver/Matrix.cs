@@ -128,6 +128,21 @@ namespace DSolver
             return this.Values;
         }
 
+        public Vector[] toVectors()
+        {
+            Vector[] columns = new Vector[this.HSize];
+            for (int j = 0; j < this.HSize; j++)
+            {
+                Vector vector = new Vector(this.VSize);
+                for (int i = 0; i < this.HSize; i++)
+                {
+                    vector.SetValue(i, this.GetValue(i, j));
+                }
+                columns[j] = vector;
+            }
+            return columns;
+        }
+
         public void Display(string name)
         {
             int i, j;

@@ -105,12 +105,34 @@ namespace DSolver
         private void SimplifySystem()
         {
             int size = this.NodesCount * 2;
+            int unknownsCount = size;
+            for (int i = 0; i < this.IsUnknown.Length; i++)
+            {
+                if (!this.IsUnknown[i])
+                {
+                    unknownsCount--;
+                }
+            }
+
+            SquareMatrix simpleMatrix = new SquareMatrix().WithZeroes(unknownsCount);
+
+            int simpleI, simpleJ;
+
+            Vector[] vectors = this.AssembledMatrix.toVectors();
+            Vector[] simplifiedVectors = new Vector[size];
+
             for (int i = 0; i < size; i++)
             {
-                if (this.IsUnknown[i])
+                simplifiedVectors[i] = new Vector(unknownsCount);
+                int count = 0;
+                for (int j = 0; j < size; j++)
                 {
-                    //TODO
+                    if (this.IsUnknown[j]) {
+                        simplifiedVectors[i].SetValue(count, vectors[i].GetValue(j));
+                        count++;
+                    }
                 }
+                simplifiedVectors[i].Display();
             }
         }
     }
