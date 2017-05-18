@@ -109,6 +109,11 @@ namespace DSolver
             }
         }
 
+        public void AddToValue(int line, int column, double valueToAdd)
+        {
+            this.SetValue(line, column, this.GetValue(line, column) + valueToAdd);
+        }
+
         public double GetValue(int line, int column)
         {
             if (line < 0 || line >= this.VSize || column < 0 || column >= this.HSize)

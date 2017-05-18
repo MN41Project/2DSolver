@@ -10,6 +10,9 @@ namespace DSolver
         public SquareMatrix AssembledMatrix { get; private set; }
         public Vector SecondMember { get; private set; }
         public int NodesCount { get; private set; }
+        public LinearSystem SimpleSystem { get; private set; }
+
+        private bool[] IsUnknown { get; set; }
 
         public DiscreteSystem()
         {
@@ -26,6 +29,8 @@ namespace DSolver
         {
             this.Elements = elements;
             this.FillAssembledMatrix();
+            this.FillSecondMember();
+            this.SimplifySystem();
             return this;
         }
 
@@ -33,6 +38,8 @@ namespace DSolver
         {
             this.Elements.Add(e);
             this.FillAssembledMatrix();
+            this.FillSecondMember();
+            this.SimplifySystem();
             return this;
         }
 
@@ -43,32 +50,68 @@ namespace DSolver
             foreach (Element element in this.Elements) {
                 int posUi = 2 * element.FirstNode.Id;
                 int posUj = 2 * element.SecondNode.Id;
-                for (int i = 0; i < 4; i++)
+                for (int i  = 0; i < 4; i++)
                 {
                     for (int j = 0; j < 4; j++)
                     {
                         if (i < 2 && j < 2)
                         {
-                            this.AssembledMatrix.SetValue(posUi + i, posUi + j, element.ElementaryMatrix.GetValue(i, j));
+                            this.AssembledMatrix.AddToValue(posUi + i, posUi + j, element.ElementaryMatrix.GetValue(i, j));
                         }
                         else if (i < 2 && j >= 2)
                         {
-                            this.AssembledMatrix.SetValue(posUi + i, posUj + j, element.ElementaryMatrix.GetValue(i, j));
+                            this.AssembledMatrix.AddToValue(posUi + i, posUj + j - 2, element.ElementaryMatrix.GetValue(i, j));
                         }
                         else if (i >= 2 && j < 2)
                         {
-                            this.AssembledMatrix.SetValue(posUj + i, posUi + j, element.ElementaryMatrix.GetValue(i, j));
+                            this.AssembledMatrix.AddToValue(posUj + i-2, posUi + j, element.ElementaryMatrix.GetValue(i, j));
                         }
                         else if (i >= 2 && j >= 2)
                         {
-                            this.AssembledMatrix.SetValue(posUj + i, posUj + j, element.ElementaryMatrix.GetValue(i, j));
+                            this.AssembledMatrix.AddToValue(posUj + i - 2, posUj + j - 2, element.ElementaryMatrix.GetValue(i, j));
                         }
-                            
-                             
                     }
                 }
             }
-            this.AssembledMatrix.Display("Yo");
+        }
+
+        private void FillSecondMember()
+        {
+            int size = this.NodesCount * 2;
+            this.SecondMember = new Vector().WithZeroes(size);
+            this.IsUnknown = new bool[size];
+            for (int i = 0; i < this.NodesCount; i++)
+            {
+                this.IsUnknown[i] = true;   
+            }
+            foreach (Element element in this.Elements)
+            {
+                this.IsUnknown[2 * element.FirstNode.Id] = !element.FirstNode.BoundaryCondition.HasOnX;
+                this.IsUnknown[2 * element.FirstNode.Id + 1] = !element.FirstNode.BoundaryCondition.HasOnY;
+                this.IsUnknown[2 * element.SecondNode.Id] = !element.SecondNode.BoundaryCondition.HasOnX;
+                this.IsUnknown[2 * element.SecondNode.Id + 1] = !element.SecondNode.BoundaryCondition.HasOnY;
+
+                this.SecondMember.SetValue(2 * element.FirstNode.Id, element.FirstNode.Force.GetValue(0));
+                this.SecondMember.SetValue(2 * element.FirstNode.Id + 1, element.FirstNode.Force.GetValue(1));
+                this.SecondMember.SetValue(2 * element.SecondNode.Id, element.SecondNode.Force.GetValue(0));
+                this.SecondMember.SetValue(2 * element.SecondNode.Id + 1, element.SecondNode.Force.GetValue(1));
+            }
+            for (int i = 0; i < size; i++)
+            {
+                Console.WriteLine(this.IsUnknown[i]);
+            }
+        }
+
+        private void SimplifySystem()
+        {
+            int size = this.NodesCount * 2;
+            for (int i = 0; i < size; i++)
+            {
+                if (this.IsUnknown[i])
+                {
+                    //TODO
+                }
+            }
         }
     }
 }
