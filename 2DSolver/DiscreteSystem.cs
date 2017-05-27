@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DSolver
 {
@@ -114,26 +115,39 @@ namespace DSolver
                 }
             }
 
-            SquareMatrix simpleMatrix = new SquareMatrix().WithZeroes(unknownsCount);
-
             int simpleI, simpleJ;
 
-            Vector[] vectors = this.AssembledMatrix.toVectors();
-            Vector[] simplifiedVectors = new Vector[size];
+            List<Vector> vectors = new List<Vector>();
+            vectors.AddRange(this.AssembledMatrix.toVectors());
+
+            List<Vector> simplifiedVectors = new List<Vector>();
+            List<Vector> toBeRemovedVectors = new List<Vector>(); 
 
             for (int i = 0; i < size; i++)
             {
-                simplifiedVectors[i] = new Vector(unknownsCount);
+                Vector v = new Vector(unknownsCount);
                 int count = 0;
                 for (int j = 0; j < size; j++)
                 {
                     if (this.IsUnknown[j]) {
-                        simplifiedVectors[i].SetValue(count, vectors[i].GetValue(j));
+                        v.SetValue(count, vectors[i].GetValue(j));
                         count++;
                     }
                 }
-                simplifiedVectors[i].Display();
+                v.Display();
+
+                if (this.IsUnknown[i])
+                {
+                    simplifiedVectors.Add(v);
+                }
+                else
+                {
+                    toBeRemovedVectors.Add(v);
+                }
             }
+
+            SquareMatrix simpleMatrix = new SquareMatrix().WithVectors(simplifiedVectors.ToArray().ToArray());
+            simpleMatrix.Display();
         }
     }
 }

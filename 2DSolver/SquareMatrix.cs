@@ -36,5 +36,12 @@ namespace DSolver
 			this.Size = this.HSize;
 			return this;
 		}
+
+        public SquareMatrix WithVectors(Vector[] vectors)
+        {
+            base.WithVectors(vectors);
+            this.Size = this.HSize;
+            return this;
+        }
     }
 }

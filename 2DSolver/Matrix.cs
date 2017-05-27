@@ -100,6 +100,23 @@ namespace DSolver
 			return this;
 		}
 
+        public virtual Matrix WithVectors(Vector[] vectors)
+        {
+            this.VSize = vectors[0].Size;
+            this.HSize = vectors.Length;
+            this.Values = new double[this.VSize, this.HSize];
+
+            for (int i = 0; i < vectors.Length; i++)
+            {
+                for (int j = 0; j < vectors[i].Size; j++)
+                {
+                    this.SetValue(j, i, vectors[i].GetValue(j));
+                }
+            }
+
+            return this;
+        }
+
         public void SetValue(int line, int column, double newValue)
         {
             if (line >= 0 && line < this.VSize && column >= 0 && column < this.HSize)
@@ -183,6 +200,23 @@ namespace DSolver
         public void Display()
         {
             Display("");
+        }
+
+        public static Matrix operator +(Matrix m1, Matrix m2)
+        {
+            if (m1.HSize != m2.HSize || m2.VSize != m2.VSize)
+            {
+                // TODO: throw error
+            }
+            Matrix m = new Matrix().WithZeroes(m1.VSize, m2.HSize);
+            for (int i = 0; i < m1.VSize; i++)
+            {
+                for (int j = 0; j < m1.HSize; j++)
+                {
+                    m.SetValue(i, j, m1.GetValue(i, j) + m2.GetValue(i, j));
+                }
+            }
+            return m;
         }
     }
 }
