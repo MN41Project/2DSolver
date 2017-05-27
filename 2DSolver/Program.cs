@@ -54,6 +54,16 @@ namespace DSolver
             // Affichage avec nom
 			vectorZ.Display("Zeros");
 
+            // Opérations
+            Matrix m1 = new Matrix().WithValues(new double[2, 2]{ { 1, 2 }, { 3, 4 } });
+            Matrix m2 = new Matrix().WithOnes(2, 2);
+            m1.Display();
+            m2.Display();
+            (m1*-2 - 2*m2).Display();
+            Vector v1 = new Vector().WithValues(new double[]{1,2});
+            Vector v2 = new Vector().WithValues(new double[]{3,4});
+            (v1 + 2*v2).Display();
+
 
             /*
              * SYSTEMES LINEAIRES
@@ -118,9 +128,12 @@ namespace DSolver
             elements.Add(element3);
 
             DiscreteSystem dSys = new DiscreteSystem().WithNodesCount(3).WithElements(elements);
-            dSys.AssembledMatrix.Display();
-            dSys.SecondMember.Display();
+            dSys.AssembledMatrix.Display("Matrice assemblee");
+            dSys.SecondMember.Display("Second membre");
+            dSys.SimpleSystem.Display();
+            dSys.SimpleSystem.Solve().Display("Solution");
             Console.ReadKey();
+
 		}
 	}
 }

@@ -46,9 +46,43 @@ namespace DSolver
         {
             if (index < 0 || index >= this.Size)
             {
+                Console.WriteLine("Out of bounds");
                 return 0;
             }
             return this.GetValue(index, 0);
+        }
+
+        public static Vector operator +(Vector m1, Vector m2)
+        {
+            if (m1.Size != m2.Size)
+            {
+                // TODO: throw error
+            }
+            Vector m = new Vector().WithZeroes(m1.Size);
+            for (int i = 0; i < m1.VSize; i++)
+            {
+                m.SetValue(i, m1.GetValue(i) + m2.GetValue(i));
+            }
+            return m;
+        }
+
+        public static Vector operator -(Vector m1, Vector m2)
+        {
+            return m1 + (-1 * m2);
+        }
+
+        public static Vector operator *(double d, Vector m)
+        {
+            for (int i = 0; i < m.Size; i++)
+            {
+                    m.SetValue(i, d * m.GetValue(i));
+            }
+            return m;
+        }
+
+        public static Vector operator *(Vector m, double d)
+        {
+            return d * m;
         }
     }
 }

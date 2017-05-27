@@ -14,6 +14,7 @@ namespace DSolver
         public LinearSystem SimpleSystem { get; private set; }
 
         private bool[] IsUnknown { get; set; }
+        private double[] BCValues { get; set; }
 
         public DiscreteSystem()
         {
@@ -81,6 +82,7 @@ namespace DSolver
             int size = this.NodesCount * 2;
             this.SecondMember = new Vector().WithZeroes(size);
             this.IsUnknown = new bool[size];
+            this.BCValues = new double[size];
             for (int i = 0; i < this.NodesCount; i++)
             {
                 this.IsUnknown[i] = true;   
@@ -92,14 +94,19 @@ namespace DSolver
                 this.IsUnknown[2 * element.SecondNode.Id] = !element.SecondNode.BoundaryCondition.HasOnX;
                 this.IsUnknown[2 * element.SecondNode.Id + 1] = !element.SecondNode.BoundaryCondition.HasOnY;
 
+                this.BCValues[2 * element.FirstNode.Id] =
+                    element.FirstNode.BoundaryCondition.HasOnX ? element.FirstNode.BoundaryCondition.XValue : 0;
+                this.BCValues[2 * element.FirstNode.Id + 1] =
+                    element.FirstNode.BoundaryCondition.HasOnY ? element.FirstNode.BoundaryCondition.YValue : 0;
+                this.BCValues[2 * element.SecondNode.Id] =
+                    element.SecondNode.BoundaryCondition.HasOnX ? element.SecondNode.BoundaryCondition.XValue : 0;
+                this.BCValues[2 * element.SecondNode.Id + 1] =
+                    element.SecondNode.BoundaryCondition.HasOnY ? element.SecondNode.BoundaryCondition.YValue : 0;
+
                 this.SecondMember.SetValue(2 * element.FirstNode.Id, element.FirstNode.Force.GetValue(0));
                 this.SecondMember.SetValue(2 * element.FirstNode.Id + 1, element.FirstNode.Force.GetValue(1));
                 this.SecondMember.SetValue(2 * element.SecondNode.Id, element.SecondNode.Force.GetValue(0));
                 this.SecondMember.SetValue(2 * element.SecondNode.Id + 1, element.SecondNode.Force.GetValue(1));
-            }
-            for (int i = 0; i < size; i++)
-            {
-                Console.WriteLine(this.IsUnknown[i]);
             }
         }
 
@@ -114,8 +121,6 @@ namespace DSolver
                     unknownsCount--;
                 }
             }
-
-            int simpleI, simpleJ;
 
             List<Vector> vectors = new List<Vector>();
             vectors.AddRange(this.AssembledMatrix.toVectors());
@@ -134,7 +139,6 @@ namespace DSolver
                         count++;
                     }
                 }
-                v.Display();
 
                 if (this.IsUnknown[i])
                 {
@@ -142,12 +146,30 @@ namespace DSolver
                 }
                 else
                 {
-                    toBeRemovedVectors.Add(v);
+                    toBeRemovedVectors.Add(v * this.BCValues[i]);
                 }
             }
 
             SquareMatrix simpleMatrix = new SquareMatrix().WithVectors(simplifiedVectors.ToArray().ToArray());
-            simpleMatrix.Display();
+
+            Vector simpleSecondMember = new Vector(unknownsCount);
+
+            int sum = 0;
+            for (int i = 0; i < size; i++)
+            {
+                if (this.IsUnknown[i])
+                {
+                    simpleSecondMember.SetValue(sum, this.SecondMember.GetValue(i));
+                    sum++;
+                }
+            }
+
+            for (int i = 0; i < toBeRemovedVectors.Count; i++)
+            {
+                simpleSecondMember = simpleSecondMember - toBeRemovedVectors[i];
+            }
+
+            this.SimpleSystem = new LinearSystem(simpleMatrix, simpleSecondMember);
         }
     }
 }

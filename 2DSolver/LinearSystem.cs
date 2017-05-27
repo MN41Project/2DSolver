@@ -56,7 +56,7 @@ namespace DSolver
             }
         }
 
-        public void Solve()
+        public Vector Solve()
         {
             int i, j, k;
             double coeff;
@@ -95,6 +95,8 @@ namespace DSolver
                 }
                 this.Solution.SetValue(i, (matrix.GetValue(i, this.Size) - sum) / matrix.GetValue(i, i));
             }
+
+            return this.Solution;
         }
 
         public void DisplaySolution()

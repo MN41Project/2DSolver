@@ -85,20 +85,30 @@ namespace DSolver
 			return this;
 		}
 
-		public virtual Matrix WithZeroes(int lines, int columns)
+        public virtual Matrix WithSameValues(int lines, int columns, double value)
 		{
-			this.Values = new double[lines, columns];
-			for (int i=0; i<lines; i++)
+            this.Values = new double[lines, columns];
+            this.VSize = lines;
+            this.HSize = columns;
+			for (int i = 0; i < lines; i++)
 			{
-				for (int j=0; j<columns; j++)
+				for (int j = 0; j < columns; j++)
 				{
-					this.SetValue(i, j, 0);
+					this.SetValue(i, j, value);
 				}
 			}
-			this.VSize = lines;
-			this.HSize = columns;
 			return this;
-		}
+        }
+
+        public virtual Matrix WithZeroes(int lines, int columns)
+        {
+            return this.WithSameValues(lines, columns, 0);
+        }
+
+        public virtual Matrix WithOnes(int lines, int columns)
+        {
+            return this.WithSameValues(lines, columns, 1);
+        }
 
         public virtual Matrix WithVectors(Vector[] vectors)
         {
@@ -135,6 +145,7 @@ namespace DSolver
         {
             if (line < 0 || line >= this.VSize || column < 0 || column >= this.HSize)
             {
+                Console.WriteLine("Out of bounds");
                 return 0;
             }
             return this.Values[line, column];
@@ -208,7 +219,7 @@ namespace DSolver
             {
                 // TODO: throw error
             }
-            Matrix m = new Matrix().WithZeroes(m1.VSize, m2.HSize);
+            Matrix m = new Matrix().WithZeroes(m1.VSize, m1.HSize);
             for (int i = 0; i < m1.VSize; i++)
             {
                 for (int j = 0; j < m1.HSize; j++)
@@ -217,6 +228,27 @@ namespace DSolver
                 }
             }
             return m;
+        }
+
+        public static Matrix operator -(Matrix m1, Matrix m2)
+        {
+            return m1 + (-1 * m2);
+        }
+
+        public static Matrix operator *(double d, Matrix m)
+        {
+            for (int i = 0; i < m.VSize; i++)
+            {
+                for (int j = 0; j < m.HSize; j++) {
+                    m.SetValue(i, j, d * m.GetValue(i, j));
+                }
+            }
+            return m;
+        }
+
+        public static Matrix operator *(Matrix m, double d)
+        {
+            return d * m;
         }
     }
 }
