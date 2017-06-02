@@ -201,7 +201,7 @@ namespace DSolver
                 Console.Write(" |");
                 for (j = 0; j < this.HSize; j++)
                 {
-                    Console.Write("{0,8:f4} ", this.GetValue(i, j));
+                    Console.Write("{0,8:f1} ", this.GetValue(i, j));
                 }
                 Console.Write("| \n");
             }
@@ -212,6 +212,69 @@ namespace DSolver
         {
             Display("");
         }
+
+        public float Determinant()
+        {
+            float determinent = 0;
+
+            if (this.VSize != this.HSize)
+                throw new Exception("Attempt to find the determinent of a non square matrix");
+            //return 0;
+
+            // Get the determinent of a 2x2 matrix
+            if (this.VSize == 2 && this.HSize == 2)
+            {
+                determinent = (float) ((this.Values[0, 0] * this.Values[1, 1]) - (this.Values[0, 1] * this.Values[1, 0]));
+                return determinent;
+            }
+
+            Matrix tempMtx = new Matrix().WithZeroes(this.VSize - 1, this.HSize - 1);
+
+            // Find the determinent with respect to the first row
+            for (int j = 0; j < this.HSize; j++)
+            {
+                tempMtx = this.Minor(0, j);
+
+                // Recursively add the determinents
+                determinent += (float) ((int)Math.Pow(-1, j) * this.Values[0, j] * tempMtx.Determinant());
+
+            }
+
+            return determinent;
+        }
+
+        public Matrix Minor(int row, int column)
+        {
+            if (this.VSize < 2 || this.HSize < 2)
+                throw new Exception("Minor not available");
+
+            int i, j = 0;
+
+            Matrix minorMtx = new Matrix(this.VSize - 1, this.HSize - 1);
+
+            // Find the minor with respect to the first element
+            for (int k = 0; k < minorMtx.VSize; k++)
+            {
+
+                if (k >= row)
+                    i = k + 1;
+                else
+                    i = k;
+
+                for (int l = 0; l < minorMtx.HSize; l++)
+                {
+                    if (l >= column)
+                        j = l + 1;
+                    else
+                        j = l;
+
+                    minorMtx.Values[k, l] = this.Values[i, j];
+                }
+            }
+
+            return minorMtx;
+        }
+
 
         public static Matrix operator +(Matrix m1, Matrix m2)
         {
