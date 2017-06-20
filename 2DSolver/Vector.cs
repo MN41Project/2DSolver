@@ -37,7 +37,6 @@ namespace DSolver
         {
             base.WithValues(new double[2] { r * Math.Cos(angle / 360 * 2 * Math.PI), r * Math.Sin(angle / 360 * 2 * Math.PI) });
             this.Size = this.VSize;
-            this.Display();
             return this;
         }
 

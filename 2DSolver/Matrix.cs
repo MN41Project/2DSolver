@@ -201,7 +201,7 @@ namespace DSolver
                 Console.Write(" |");
                 for (j = 0; j < this.HSize; j++)
                 {
-                    Console.Write("{0,8:f1} ", this.GetValue(i, j));
+                    Console.Write("{0,8:f3} ", this.GetValue(i, j));
                 }
                 Console.Write("| \n");
             }

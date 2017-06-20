@@ -44,6 +44,10 @@
     <Compile Include="Utils.cs" />
     <Compile Include="BoundaryCondition.cs" />
     <Compile Include="DiscreteSystem.cs" />
+    <Compile Include="FilePicker.cs" />
+    <Compile Include="TxtFile.cs" />
+    <Compile Include="ElementAttributes.cs" />
+    <Compile Include="OptionSelector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

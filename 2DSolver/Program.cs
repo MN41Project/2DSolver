@@ -135,6 +135,7 @@ namespace DSolver
            */
 
             /* TEST SYSTEME ENONCE */
+            /*
             double E = 1000000, d=0.015, s = Math.PI * d * d / 4;
             Node node1 = new Node().WithId(0).WithPosX(0).WithPosY(0.2)
                             .WithBoundaryCondition(new BoundaryCondition().WithX(0).WithY(0));
@@ -215,7 +216,25 @@ namespace DSolver
             sys.SimpleSystem.Display();
             sys.SimpleSystem.Solve().Display();
             Console.ReadKey();
+*/
+            //Console.SetWindowSize(800, 800);
 
+            FilePicker fp = new FilePicker().WithBasePath(@"../../../Data");
+            TxtFile file = fp.PickAFile();
+
+            if (!file.IsValid)
+            {
+                Console.WriteLine("This file can't be used");
+                return;
+            }
+
+            DiscreteSystem sys = file.GetDiscreteSystem();
+            sys.AssembledMatrix.Display();
+            sys.SecondMember.Display();
+            sys.SimpleSystem.Display();
+            sys.SimpleSystem.Solve().Display();
+
+            Console.ReadKey();
 		}
 	}
 }
