@@ -33,11 +33,10 @@ namespace DSolver
 
         public void Display()
         {
-            int i, j;
-            for (i = 0; i < this.Size; i++)
+            for (int i = 0; i < this.Size; i++)
             {
                 Console.Write("|");
-                for (j = 0; j < this.Size; j++)
+                for (int j = 0; j < this.Size; j++)
                 {
                     Console.Write("{0,8:f4} ", this.K.GetValue(i, j));
                 }
@@ -57,7 +56,7 @@ namespace DSolver
                 }
                 else
                 {
-                    Console.Write(" u{0} ", i);
+                   Console.Write(" x{0} ", i);
                 }
                 Console.Write("|");
                 if (i == Math.Floor(Convert.ToDouble(this.Size / 2)))

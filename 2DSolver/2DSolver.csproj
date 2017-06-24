@@ -48,6 +48,7 @@
     <Compile Include="src\maths\SquareMatrix.cs" />
     <Compile Include="src\maths\Vector.cs" />
     <Compile Include="src\maths\LinearSystem.cs" />
+    <Compile Include="src\io\ResultsFile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

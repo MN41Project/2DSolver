@@ -178,19 +178,17 @@ namespace DSolver
 
         public void Display(string name, string[] unknownsNames)
         {
-            int i, j;
-
             string spacer = "   ";
             if (name != "")
             {
-                for (i = 0; i < name.Length; i++)
+                for (int i = 0; i < name.Length; i++)
                 {
                     spacer += " ";
                 }
             }
 
             Console.WriteLine();
-            for (i = 0; i < this.VSize; i++)
+            for (int i = 0; i < this.VSize; i++)
             {
                 bool isMiddle = i == Math.Floor(Convert.ToDouble(this.VSize / 2));
                 if (name !=  "") {
@@ -217,7 +215,7 @@ namespace DSolver
                 }
 
                 Console.Write(" |");
-                for (j = 0; j < this.HSize; j++)
+                for (int j = 0; j < this.HSize; j++)
                 {
                     Console.Write("{0,8:f3} ", this.GetValue(i, j));
                 }
