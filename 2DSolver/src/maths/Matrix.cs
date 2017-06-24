@@ -173,6 +173,11 @@ namespace DSolver
 
         public void Display(string name)
         {
+            this.Display(name, new string[0]);
+        }
+
+        public void Display(string name, string[] unknownsNames)
+        {
             int i, j;
 
             string spacer = "   ";
@@ -187,8 +192,9 @@ namespace DSolver
             Console.WriteLine();
             for (i = 0; i < this.VSize; i++)
             {
+                bool isMiddle = i == Math.Floor(Convert.ToDouble(this.VSize / 2));
                 if (name !=  "") {
-                    if (i == Math.Floor(Convert.ToDouble(this.VSize / 2)))
+                    if (isMiddle)
                     {
 
                         Console.Write(" {0} =", name);
@@ -198,6 +204,18 @@ namespace DSolver
                         Console.Write(spacer);
                     }
                 }
+
+
+                if (this.HSize == 1 && unknownsNames.Length > 0)
+                {
+                    string space = "   ";
+                    if (isMiddle)
+                    {
+                        space = " = ";
+                    }
+                    Console.Write("| {0} |{1}", unknownsNames[i], space);
+                }
+
                 Console.Write(" |");
                 for (j = 0; j < this.HSize; j++)
                 {
@@ -264,9 +282,13 @@ namespace DSolver
                 for (int l = 0; l < minorMtx.HSize; l++)
                 {
                     if (l >= column)
+                    {
                         j = l + 1;
+                    }
                     else
+                    {
                         j = l;
+                    }
 
                     minorMtx.Values[k, l] = this.Values[i, j];
                 }
@@ -312,6 +334,12 @@ namespace DSolver
         public static Matrix operator *(Matrix m, double d)
         {
             return d * m;
+        }
+
+        public double this[int i, int j]
+        {
+            get { return this.Values[i, j]; }
+            set { this.Values[i, j] = value; }
         }
     }
 }

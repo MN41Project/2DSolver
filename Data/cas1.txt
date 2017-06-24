@@ -28,9 +28,9 @@ Force sur noeuds (Force, Angle d’orientation en degree):
 0 0
 0 0
 0 0
+5 270
 0 0
 0 0
-10 315
 0 0
 0 0
 Condition limite sur noeuds (X (1=oui,0=non), contrainte x, y (1=oui,0=non), contrainte y)

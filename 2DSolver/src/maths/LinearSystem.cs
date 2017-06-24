@@ -203,8 +203,62 @@ namespace DSolver
             return this.Solution;
         }
 
+        private bool CanBeSolvedWithThomasMethod()
+        {
+            return this.K.IsTridiagonal();
+        }
+
         private Vector SolveWithThomas(bool showDetails)
         {
+            if (!this.CanBeSolvedWithThomasMethod())
+            {
+                throw new Exception("This system can't be solved with Thomas method");
+            }
+
+            int n = this.Size;
+            Vector A = new Vector().WithZeroes(n);
+            Vector B = new Vector().WithZeroes(n);
+            Vector C = new Vector().WithZeroes(n);
+            Vector D = new Vector().WithZeroes(n);
+            Vector Alpha = new Vector().WithZeroes(n);
+            Vector Beta = new Vector().WithZeroes(n);
+
+            // Retrieve a, under the diagonal of K
+            for (var i = 1; i < n; i++) {
+                A[i] = K[i, i - 1];
+            }
+
+            // Retrieve b, the diagonal of K
+            for (var i = 0; i < n; i++) {
+                B[i] = K[i, i];
+            }
+
+            // Retrieve c, on top of the diagonal of K
+            for (var i = 0; i < n - 1; i++) {
+                C[i] = K[i, i + 1];
+            }
+
+            // Retrieve d, which is the vector F
+            for (var i = 0; i < n; i++) {
+                D[i] = F[i];
+            }
+
+            // Compute alpha and beta
+            Alpha[0] = C[0] / B[0];
+            Beta[0] = D[0] / B[0];
+            for (var i = 1; i < n; i++) {
+                if (i < n - 1) {
+                    Alpha[i] = C[i] / (B[i] - A[i]*Alpha[i - 1]);
+                }
+                Beta[i] = (D[i] - A[i]*Beta[i - 1]) / (B[i] - A[i]*Alpha[i - 1]);
+            }
+
+            // Finally solve our new diagonal system from the bottom to the top
+            this.Solution[n - 1] = Beta[n - 1];
+            for (var i = n - 2; i >= 0; i--) {
+                this.Solution[i] = Beta[i] - Alpha[i] * this.Solution[i + 1];
+            }
+
             return this.Solution;
         }
 

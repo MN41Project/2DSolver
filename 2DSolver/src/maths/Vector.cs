@@ -91,5 +91,11 @@ namespace DSolver
         {
             return d * m;
         }
+
+        public double this[int i]
+        {
+            get { return this.Values[i, 1]; }
+            set { this.Values[i, 1] = value; }
+        }
     }
 }

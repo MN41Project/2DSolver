@@ -30,7 +30,23 @@ namespace DSolver
                                                 .WithOptions(methodsNames)
                                                 .WithExplanation("Choose a method");
             
-            sys.SimpleSystem.Solve(methods[methodSelector.PickAnOption()], showDetails).Display("u");
+            OptionSelector resultsTypeSelector = new OptionSelector()
+                                                    .WithOptions(new string[]{"No", "Yes"})
+                                                    .WithExplanation("Do you want the results in a file inside the Results folder?");
+            bool wantResultsInFile = resultsTypeSelector.PickAnOption() == 1;
+
+            try {
+                Vector results = sys.SimpleSystem.Solve(methods[methodSelector.PickAnOption()], showDetails);
+
+                if (!wantResultsInFile)
+                {
+                    results.Display("", sys.SimpleSystem.UnknownsNames);
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             Console.ReadKey();
           

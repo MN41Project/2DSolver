@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace DSolver
 {
     public class SquareMatrix : Matrix 
@@ -42,6 +45,63 @@ namespace DSolver
             base.WithVectors(vectors);
             this.Size = this.HSize;
             return this;
+        }
+
+        public bool IsTridiagonal()
+        {
+            if (this.Size < 3)
+            {
+                return false;
+            }
+
+            List<string> tridiagonalValues = new List<string>();
+
+            for (var i = 0; i < this.Size; i++)
+            {
+                for (var j = 0; j < this.Size; j++)
+                {
+                    if (j > i + 1)
+                    {
+                        tridiagonalValues.Add(i + "," + j);
+                    }
+                }
+            }
+
+            for (var i = 0; i < this.Size; i++)
+            {
+                for (var j = 0; j < this.Size; j++)
+                {
+                    if (j < i - 1)
+                    {
+                        tridiagonalValues.Add(i + "," + j);
+                    }
+                }
+            }
+
+            foreach (string ij in tridiagonalValues)
+            {
+                Console.WriteLine(ij);
+            }
+            Console.ReadKey();
+
+            bool zeroesAreCorrect = true;
+
+            for (var i = 0; i < this.Size; i++)
+            {
+                for (var j = 0; j < this.Size; j++)
+                {
+                    string val = i + "," + j;
+                    if (tridiagonalValues.Exists(x => x.Equals(val)))
+                    {
+                        if (this[i, j] != 0)
+                        {
+                            zeroesAreCorrect = false;
+                        }
+                    }
+                }
+            }
+
+            return zeroesAreCorrect;
         }
     }
 }
