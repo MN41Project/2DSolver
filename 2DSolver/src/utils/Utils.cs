@@ -39,6 +39,12 @@ namespace DSolver
             }
             return ints;
         }
+
+        public static void Pause()
+        {
+            Console.WriteLine("\n\nHit ENTER to continue");
+            Console.ReadLine();
+        }
 	}
 }
 

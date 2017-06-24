@@ -11,6 +11,7 @@ namespace DSolver
         public Vector F { get; private set; }
         public Vector Solution { get; private set; }
         public int Size { get; private set; }
+        public string[] UnknownsNames { get; private set; } 
 
 		public LinearSystem(SquareMatrix K, Vector F)
 		{
@@ -21,7 +22,14 @@ namespace DSolver
 			this.K = K;
 			this.F = F;
             this.Size = K.Size;
+            this.UnknownsNames = new string[0];
 		}
+
+        public LinearSystem WithUnknownsNames(string[] names)
+        {
+            this.UnknownsNames = names;
+            return this;
+        }
 
         public void Display()
         {
@@ -43,7 +51,14 @@ namespace DSolver
                     Console.Write("   ");
                 }
                 Console.Write("|");
-                Console.Write(" u{0} ", i);
+                if (this.UnknownsNames.Length == this.Size)
+                {
+                    Console.Write(" {0} ", this.UnknownsNames[i]);
+                }
+                else
+                {
+                    Console.Write(" u{0} ", i);
+                }
                 Console.Write("|");
                 if (i == Math.Floor(Convert.ToDouble(this.Size / 2)))
                 {

@@ -30,19 +30,31 @@ namespace DSolver
         public DiscreteSystem WithElements(List<Element> elements)
         {
             this.Elements = elements;
-            this.FillAssembledMatrix();
-            this.FillSecondMember();
-            this.SimplifySystem();
             return this;
         }
 
         public DiscreteSystem AddElement(Element e)
         {
             this.Elements.Add(e);
+            return this;
+        }
+
+        public void Build(bool showDetails)
+        {
             this.FillAssembledMatrix();
             this.FillSecondMember();
             this.SimplifySystem();
-            return this;
+
+            if (showDetails)
+            {
+                this.AssembledMatrix.Display("Assembled matrix");
+                this.SecondMember.Display("Second member");
+
+                Console.WriteLine("BC-simplified system\n");
+                this.SimpleSystem.Display();
+
+                Utils.Pause();
+            }
         }
 
         private void FillAssembledMatrix()
@@ -110,8 +122,23 @@ namespace DSolver
             }
         }
 
+        private List<string> GenerateUnknownsNames()
+        {
+            List<string> names = new List<string>();
+
+            for (var i = 0; i < this.NodesCount; i++)
+            {
+                names.Add("u" + i);
+                names.Add("v" + i);
+            }
+
+            return names;
+        }
+
         private void SimplifySystem()
         {
+            List<string> unknownsNames = this.GenerateUnknownsNames();
+
             int size = this.NodesCount * 2;
             int unknownsCount = size;
             for (int i = 0; i < this.IsUnknown.Length; i++)
@@ -127,6 +154,8 @@ namespace DSolver
 
             List<Vector> simplifiedVectors = new List<Vector>();
             List<Vector> toBeRemovedVectors = new List<Vector>(); 
+
+            int namesRemovedCount = 0;
 
             for (int i = 0; i < size; i++)
             {
@@ -146,6 +175,9 @@ namespace DSolver
                 }
                 else
                 {
+                    unknownsNames.RemoveAt(i - namesRemovedCount);
+                    namesRemovedCount++;
+
                     toBeRemovedVectors.Add(v * this.BCValues[i]);
                 }
             }
@@ -169,7 +201,7 @@ namespace DSolver
                 simpleSecondMember = simpleSecondMember - toBeRemovedVectors[i];
             }
 
-            this.SimpleSystem = new LinearSystem(simpleMatrix, simpleSecondMember);
+            this.SimpleSystem = new LinearSystem(simpleMatrix, simpleSecondMember).WithUnknownsNames(unknownsNames.ToArray());
         }
     }
 }

@@ -22,9 +22,7 @@ namespace DSolver
             }
 
             DiscreteSystem sys = file.GetDiscreteSystem();
-            sys.AssembledMatrix.Display();
-            sys.SecondMember.Display();
-            sys.SimpleSystem.Display();
+            sys.Build(showDetails);
 
             int[] methods = new int[]{ LinearSystem.GAUSS_METHOD, LinearSystem.LU_METHOD, LinearSystem.THOMAS_METHOD };
             string[] methodsNames = new string[] { "Gauss method", "LU method", "Thomas method" };
