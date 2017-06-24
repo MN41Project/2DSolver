@@ -6,7 +6,36 @@ namespace DSolver
 	{
         public static void Main(string[] args)
         {
+            bool showDetails = false;
+            OptionSelector verboseSelector = new OptionSelector()
+                                                .WithOptions(new string[]{ "Without details", "With details" })
+                                                .WithExplanation("Choose a verbose level");
+            showDetails = verboseSelector.PickAnOption() == 1;
+
+            FilePicker fp = new FilePicker().WithBasePath(@"../../../Data");
+            TxtFile file = fp.PickAFile();
+
+            if (!file.IsValid)
+            {
+                Console.WriteLine("This file can't be used");
+                return;
+            }
+
+            DiscreteSystem sys = file.GetDiscreteSystem();
+            sys.AssembledMatrix.Display();
+            sys.SecondMember.Display();
+            sys.SimpleSystem.Display();
+
+            int[] methods = new int[]{ LinearSystem.GAUSS_METHOD, LinearSystem.LU_METHOD, LinearSystem.THOMAS_METHOD };
+            string[] methodsNames = new string[] { "Gauss method", "LU method", "Thomas method" };
+            OptionSelector methodSelector = new OptionSelector()
+                                                .WithOptions(methodsNames)
+                                                .WithExplanation("Choose a method");
             
+            sys.SimpleSystem.Solve(methods[methodSelector.PickAnOption()], showDetails).Display("u");
+
+            Console.ReadKey();
+          
             /*
              * MANIPULATION DE MATRICES
              */
@@ -218,23 +247,6 @@ namespace DSolver
             Console.ReadKey();
 */
             //Console.SetWindowSize(800, 800);
-
-            FilePicker fp = new FilePicker().WithBasePath(@"../../../Data");
-            TxtFile file = fp.PickAFile();
-
-            if (!file.IsValid)
-            {
-                Console.WriteLine("This file can't be used");
-                return;
-            }
-
-            DiscreteSystem sys = file.GetDiscreteSystem();
-            sys.AssembledMatrix.Display();
-            sys.SecondMember.Display();
-            sys.SimpleSystem.Display();
-            sys.SimpleSystem.Solve().Display();
-
-            Console.ReadKey();
 		}
 	}
 }

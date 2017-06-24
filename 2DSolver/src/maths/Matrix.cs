@@ -12,7 +12,7 @@ namespace DSolver
 
         public int VSize { get; protected set; }
 
-        protected double[,] Values { get; set; }
+        public double[,] Values { get; set; }
 
 		public Matrix()
 		{
