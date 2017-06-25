@@ -64,7 +64,7 @@ namespace DSolver
         {
             if (m1.Size != m2.Size)
             {
-                // TODO: throw error
+                throw new Exception("The two vectors don't have the same size");
             }
             Vector m = new Vector().WithZeroes(m1.Size);
             for (int i = 0; i < m1.VSize; i++)

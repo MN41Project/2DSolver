@@ -48,8 +48,6 @@ namespace DSolver
 		public Element WithSection(double s)
 		{
 			this.Section = s;
-
-			// TODO: check if both nodes are set
 			this.fillProperties();
 			return this;
 		}

@@ -234,8 +234,9 @@ namespace DSolver
             float determinent = 0;
 
             if (this.VSize != this.HSize)
+            {
                 throw new Exception("Attempt to find the determinent of a non square matrix");
-            //return 0;
+            }
 
             // Get the determinent of a 2x2 matrix
             if (this.VSize == 2 && this.HSize == 2)
