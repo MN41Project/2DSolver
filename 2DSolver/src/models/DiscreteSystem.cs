@@ -128,8 +128,8 @@ namespace DSolver
 
             for (var i = 0; i < this.NodesCount; i++)
             {
-                names.Add("u" + i);
-                names.Add("v" + i);
+                names.Add("u" + (i + 1));
+                names.Add("v" + (i + 1));
             }
 
             return names;

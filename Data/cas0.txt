@@ -1,0 +1,20 @@
+Nombre de noeuds:
+3
+Cordonnees de noeuds en metre (x, y):
+0 0
+2 0
+1 1
+Nombre d'elements:
+3
+Connexion d'elements (No. noeud 1, No. noeud 2):
+1 2
+2 3
+3 1
+Force sur noeuds (Force, Angle d’orientation en degree):
+0 0
+0 0
+100 270
+Condition limite sur noeuds (X (1=oui,0=non), contrainte x, y (1=oui,0=non), contrainte y)
+1 0 1 0
+1 0 0 0
+0 0 0 0
