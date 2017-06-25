@@ -29,7 +29,7 @@ namespace DSolver
             return this;
         }
 
-        public void validateFile()
+        public void ValidateFile()
         {
             this.IsValid = false;
             StreamReader file = new StreamReader(File.OpenRead(this.Path));

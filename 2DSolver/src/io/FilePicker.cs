@@ -39,7 +39,7 @@ namespace DSolver
                 .WithOptions(files.Select(x => x.Name).ToArray())
                 .WithExplanation("Choose a file")
                 .PickAnOption();
-            files[this.Selected].validateFile();
+            files[this.Selected].ValidateFile();
             return files[this.Selected];
         }
     }
