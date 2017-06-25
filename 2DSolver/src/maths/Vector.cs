@@ -23,6 +23,7 @@ namespace DSolver
 		public Vector WithValues(double[] values)
 		{
 			base.WithValues(values);
+            this.Size = values.Length;
 			return this;
 		}
 
@@ -94,8 +95,8 @@ namespace DSolver
 
         public double this[int i]
         {
-            get { return this.Values[i, 1]; }
-            set { this.Values[i, 1] = value; }
+            get { return this.Values[i, 0]; }
+            set { this.Values[i, 0] = value; }
         }
     }
 }

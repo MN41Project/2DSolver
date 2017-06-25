@@ -44,9 +44,11 @@ namespace DSolver
                 }
                 else
                 {
+                    string resultsFileName = "results_" + file.Name;
                     ResultsFile resultsFile = new ResultsFile()
-                        .WithPath(@"../../../Results/results_" + file.Name).WithDiscreteSystem(sys);
+                        .WithPath(@"../../../Results/" + resultsFileName).WithDiscreteSystem(sys);
                     resultsFile.Write(showDetails);
+                    Console.WriteLine("\n{0} has been correctly written inside Results/", resultsFileName);
                 }
             }
             catch(Exception e)

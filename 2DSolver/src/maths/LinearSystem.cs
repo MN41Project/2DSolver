@@ -17,7 +17,7 @@ namespace DSolver
 		{
 			if (K.Size != F.Size)
             {
-                return;
+                throw new Exception("K and F must have the same size");
             }
 			this.K = K;
 			this.F = F;
@@ -87,6 +87,11 @@ namespace DSolver
                 default:
                     throw new Exception("This method doesn't exist");
             }
+        }
+
+        public Vector Solve(int method)
+        {
+            return this.Solve(method, false);
         }
 
         public Vector Solve(bool showDetails)
@@ -224,22 +229,22 @@ namespace DSolver
 
             // Retrieve a, under the diagonal of K
             for (var i = 1; i < n; i++) {
-                A[i] = K[i, i - 1];
+                A[i] = this.K[i, i - 1];
             }
 
             // Retrieve b, the diagonal of K
             for (var i = 0; i < n; i++) {
-                B[i] = K[i, i];
+                B[i] = this.K[i, i];
             }
 
             // Retrieve c, on top of the diagonal of K
             for (var i = 0; i < n - 1; i++) {
-                C[i] = K[i, i + 1];
+                C[i] = this.K[i, i + 1];
             }
 
             // Retrieve d, which is the vector F
             for (var i = 0; i < n; i++) {
-                D[i] = F[i];
+                D[i] = this.F[i];
             }
 
             // Compute alpha and beta
@@ -252,7 +257,18 @@ namespace DSolver
                 Beta[i] = (D[i] - A[i]*Beta[i - 1]) / (B[i] - A[i]*Alpha[i - 1]);
             }
 
+            if (showDetails)
+            {
+                A.Display("A");
+                B.Display("B");
+                C.Display("C");
+                D.Display("D");
+                Alpha.Display("Alpha");
+                Beta.Display("Beta");
+            }
+
             // Finally solve our new diagonal system from the bottom to the top
+            this.Solution = new Vector(this.Size);
             this.Solution[n - 1] = Beta[n - 1];
             for (var i = n - 2; i >= 0; i--) {
                 this.Solution[i] = Beta[i] - Alpha[i] * this.Solution[i + 1];

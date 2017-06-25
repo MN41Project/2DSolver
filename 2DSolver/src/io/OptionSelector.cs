@@ -54,6 +54,8 @@ namespace DSolver
                 }
             }
 
+            Console.Clear();
+
             return this.Selected;
         }
 

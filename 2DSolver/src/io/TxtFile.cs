@@ -23,6 +23,7 @@ namespace DSolver
         public TxtFile WithPath(string path)
         {
             this.Path = path;
+            path = path.Replace('\\', '/');
             string[] parts = path.Split('/');
             this.Name = parts[parts.Length - 1];
             return this;

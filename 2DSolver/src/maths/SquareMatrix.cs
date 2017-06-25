@@ -78,12 +78,6 @@ namespace DSolver
                 }
             }
 
-            foreach (string ij in tridiagonalValues)
-            {
-                Console.WriteLine(ij);
-            }
-            Console.ReadKey();
-
             bool zeroesAreCorrect = true;
 
             for (var i = 0; i < this.Size; i++)
