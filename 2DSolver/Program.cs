@@ -13,11 +13,18 @@ namespace DSolver
             showDetails = verboseSelector.PickAnOption() == 1;
 
             FilePicker fp = new FilePicker().WithBasePath(@"../../../Data");
-            TxtFile file = fp.PickAFile();
 
-            if (!file.IsValid)
+            TxtFile file;
+
+            try
             {
+                file = fp.PickAFile();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
                 Console.WriteLine("This file can't be used");
+                Console.ReadKey();
                 return;
             }
 

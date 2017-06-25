@@ -38,7 +38,7 @@ namespace DSolver
             this.NodesCount = Convert.ToInt32(file.ReadLine());
             if (!(this.NodesCount > 0))
             {
-                return;
+                throw new Exception("Nodes count has to be bigger than 0");
             }
          
             file.ReadLine();
@@ -48,7 +48,7 @@ namespace DSolver
                 double[] pos = Utils.LineToDoubles(file.ReadLine());
                 if (pos.Length != 2)
                 {
-                    return;
+                    throw new Exception("Wrong number of coordinates");
                 }
                 this.Nodes.Add(new Node().WithId(i).WithPosX(pos[0]).WithPosY(pos[1]));
             }
@@ -57,7 +57,7 @@ namespace DSolver
             this.ElementsCount = Convert.ToInt32(file.ReadLine());
             if (!(this.ElementsCount > 0))
             {
-                return;
+                throw new Exception("Elements count has to be bigger than 0");
             }
 
             file.ReadLine();
@@ -67,7 +67,7 @@ namespace DSolver
                 int[] nodesIndexes = Utils.LineToInts(file.ReadLine());
                 if (nodesIndexes.Length != 2)
                 {
-                    return;
+                    throw new Exception("Wrong number of elements connexions");
                 }
                 this.Elements.Add(new Element()
                     .WithFirstNode(this.Nodes[nodesIndexes[0] - 1])
@@ -85,7 +85,7 @@ namespace DSolver
                 double[] forces = Utils.LineToDoubles(file.ReadLine());
                 if (forces.Length != 2)
                 {
-                    return;
+                    throw new Exception("Wrong number of force components");
                 }
                 this.Nodes[i].WithForce(new Vector().WithPolarValues(forces[0], forces[1]));
             }
@@ -97,7 +97,7 @@ namespace DSolver
                 int[] bcs = Utils.LineToInts(file.ReadLine());
                 if (bcs.Length != 4)
                 {
-                    return;
+                    throw new Exception("Wrong number of BC components");
                 }
                 BoundaryCondition boundaryCondition = new BoundaryCondition();
                 if (bcs[0] == 1)

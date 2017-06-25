@@ -1,4 +1,4 @@
-Nombre de noeuds:
+﻿Nombre de noeuds:
 8
 Cordonnees de noeuds en metre (x, y):
 0 0,2
